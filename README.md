@@ -6,6 +6,14 @@
 
 黄粗外框 → 单词大字（深蓝白描边）→ 音标浅蓝框（🔊 + IPA）→ 中文浅绿框 → 油画大插图 → 例句紫虚线框（关键词标红 + 中文译）→ 同类词扩展紫虚线框（3 个小图卡）
 
+## Demo 配图（油画底图，已去水印）
+
+三张验证卡的无文字油画底图（`demo/` 目录）：女孩抱多个苹果体现 `some` 的复数语义、海边看船对应 `sea`、水中白鸭对应 `duck`。
+
+| some | sea | duck |
+|:---:|:---:|:---:|
+| ![some](demo/some_oil_clean.png) | ![sea](demo/sea_oil_clean.png) | ![duck](demo/duck_oil_clean.png) |
+
 ## 与 flashcard skill 的分工
 
 | | flashcard（场景卡） | 本 skill（单词卡） |
@@ -21,6 +29,7 @@ SKILL.md                            # 8 步流水线（词义构图→油画底�
 references/semantic-composition.md  # 语义构图硬规则：some 必须多对象、动作词画瞬间、抽象词具象隐喻
 references/card-template.html       # 7 段版式 HTML 模板（改 CARDS 数组即换词表）
 scripts/repair_watermark.py         # 纹理克隆去水印（去 ImageGen 右下角固定水印，油画安全）
+demo/                               # 三张验证卡油画底图（some / sea / duck）
 ```
 
 ## 快速用法
