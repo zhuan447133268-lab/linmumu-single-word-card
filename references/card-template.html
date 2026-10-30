@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>单词卡验证 · some / sea / duck</title>
+<style>
+  :root{
+    --yellow:#ffce3a; --inner:#ffe1a0;
+    --navy:#1f2a44; --kw:#e23b3b;
+    --ipa-bd:#bfe0f5; --ipa-bg:#8fcdf0;
+    --zh-bd:#bfe6c8;  --zh-bg:#8fd9a8;
+    --purple-bd:#b9a7e0; --purple-bg:#9b86d6; --pink-bg:#f48fb1;
+    --star-p:#f48fb1; --star-b:#6fb1e0;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:#fff;padding:28px 16px 48px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  .page{max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;gap:26px;justify-content:center;}
+  .card{width:330px;border:10px solid var(--yellow);border-radius:20px;background:#fffdf6;padding:7px;
+    box-shadow:0 6px 18px rgba(31,42,68,.10);}
+  .inner{border:2px solid var(--inner);border-radius:14px;padding:12px 12px 14px;}
+  .deco{display:flex;align-items:center;justify-content:space-between;font-size:16px;font-weight:800;color:var(--yellow);padding:0 2px 4px;}
+  .deco .star{font-size:15px;}
+  .deco .pink{color:var(--star-p);} .deco .blue{color:var(--star-b);}
+  .word{text-align:center;font-size:42px;font-weight:900;color:var(--navy);line-height:1.1;margin:2px 0 8px;
+    -webkit-text-stroke:1.4px #fff;text-shadow:2px 2px 0 #cfcfcf;letter-spacing:.5px;}
+  .field{display:flex;align-items:center;border-radius:12px;border:2px solid #ccc;padding:7px 10px;margin-top:9px;font-size:14px;}
+  .field .tab{display:inline-block;background:#888;color:#fff;border-radius:8px;padding:2px 9px;font-size:12px;font-weight:700;margin-right:7px;flex:none;}
+  .field .ico{margin-right:6px;font-size:14px;flex:none;}
+  .field .val{font-size:14px;}
+  .ipa{border-color:var(--ipa-bd);} .ipa .tab{background:var(--ipa-bg);} .ipa .val{font-style:italic;color:#243;}
+  .zh{border-color:var(--zh-bd);} .zh .tab{background:var(--zh-bg);} .zh .val{font-weight:700;color:#222;}
+  .illus{margin-top:10px;width:100%;aspect-ratio:1/1;border:2px solid #333;border-radius:10px;overflow:hidden;background:#eee;}
+  .illus img{width:100%;height:100%;object-fit:cover;display:block;}
+  .ex{position:relative;border:2px dashed var(--purple-bd);border-radius:12px;padding:14px 10px 9px;margin-top:10px;}
+  .ex .tab{position:absolute;top:-12px;left:12px;background:var(--pink-bg);color:#fff;border-radius:8px;padding:2px 9px;font-size:12px;font-weight:700;transform:rotate(-4deg);}
+  .ex .ico{position:absolute;top:-10px;left:62px;font-size:14px;}
+  .ex-en{font-size:14px;color:#222;} .ex-en .kw{color:var(--kw);font-weight:800;}
+  .ex-div{height:1px;background:#eceaf3;margin:7px 0;}
+  .ex-zh{font-size:13px;color:#555;}
+  .ext{position:relative;border:2px dashed var(--purple-bd);border-radius:12px;padding:24px 8px 10px;margin-top:10px;}
+  .ext .ext-tab{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--purple-bg);color:#fff;border-radius:10px;padding:3px 12px;font-size:12px;font-weight:700;white-space:nowrap;}
+  .ext .ext-tab .ico{margin-left:5px;}
+  .ext-row{display:flex;}
+  .ext-item{flex:1;text-align:center;padding:0 4px;position:relative;}
+  .ext-item+.ext-item{border-left:2px dashed #ddd3ef;}
+  .ext-ico{font-size:24px;display:block;line-height:1.1;}
+  .ext-en{font-weight:700;font-size:13px;color:var(--navy);display:block;}
+  .ext-zh{font-size:11px;color:#777;display:block;}
+  h1{text-align:center;color:var(--navy);font-size:20px;margin:0 0 4px;}
+  .note{text-align:center;color:#888;font-size:12.5px;margin:0 0 22px;}
+</style>
+</head>
+<body>
+<h1>单词卡验证 · 单卡版式</h1>
+<p class="note">逆向自参考样图：黄色粗框 + 单词大字 + 音标/中文色框 + 大插图 + 例句紫框 + 同类词扩展紫框。文字确定性叠加，插图为 ImageGen 无文字生成。</p>
+<div class="page" id="page"></div>
+
+<script>
+const CARDS = [
+  {
+    word:"some",
+    ipa:"/sʌm, səm/",
+    zh:"一些",
+    img:"assets/some_oil_clean.png",
+    exEn:'I have <b class="kw">some</b> red apples.',
+    exZh:"我有一些红苹果。",
+    ext:[{ico:"🟤",en:"brown",zh:"棕色"},{ico:"⚪",en:"white",zh:"白色"},{ico:"⚫",en:"black",zh:"黑色"}]
+  },
+  {
+    word:"sea",
+    ipa:"/siː/",
+    zh:"海；海洋",
+    img:"assets/sea_oil_clean.png",
+    exEn:'We see a big boat on the <b class="kw">sea</b>.',
+    exZh:"我们看见海上有艘大船。",
+    ext:[{ico:"🌿",en:"grass",zh:"草地"},{ico:"☀️",en:"sun",zh:"太阳"},{ico:"🍃",en:"leaf",zh:"叶子"}]
+  },
+  {
+    word:"duck",
+    ipa:"/dʌk/",
+    zh:"鸭",
+    img:"assets/duck_oil_clean.png",
+    exEn:'A <b class="kw">duck</b> swims by the green grass.',
+    exZh:"一只鸭子在绿草边游泳。",
+    ext:[{ico:"🦊",en:"fox",zh:"狐狸"},{ico:"🐼",en:"panda",zh:"熊猫"},{ico:"🐵",en:"monkey",zh:"猴子"}]
+  }
+];
+
+const page = document.getElementById("page");
+for(const c of CARDS){
+  const extItems = c.ext.map(e=>`<div class="ext-item"><span class="ext-ico">${e.ico}</span><span class="ext-en">${e.en}</span><span class="ext-zh">${e.zh}</span></div>`).join("");
+  const el = document.createElement("div");
+  el.className = "card";
+  el.innerHTML = `
+    <div class="inner">
+      <div class="deco"><span>//</span><span class="star pink">☆</span><span class="star blue">☆</span><span>//</span></div>
+      <div class="word">${c.word}</div>
+      <div class="field ipa"><span class="tab">音标</span><span class="ico">🔊</span><span class="val">${c.ipa}</span></div>
+      <div class="field zh"><span class="tab">中文</span><span class="val">${c.zh}</span></div>
+      <div class="illus"><img src="${c.img}" alt="${c.word}"></div>
+      <div class="ex">
+        <span class="tab">例句</span><span class="ico">📖</span>
+        <div class="ex-en">${c.exEn}</div>
+        <div class="ex-div"></div>
+        <div class="ex-zh">${c.exZh}</div>
+      </div>
+      <div class="ext">
+        <div class="ext-tab">同类词扩展<span class="ico">💡</span></div>
+        <div class="ext-row">${extItems}</div>
+      </div>
+    </div>`;
+  page.appendChild(el);
+}
+</script>
+</body>
+</html>
